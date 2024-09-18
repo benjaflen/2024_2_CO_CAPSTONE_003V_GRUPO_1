@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mi App{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav>
+       
+            
+                <a href="{% url 'login' %}">Iniciar sesión</a>
+                <a href="{% url 'registro_conductor' %}">Regístrate como Conductor</a>
+                <a href="{% url 'registro_apoderado' %}">Regístrate como Apoderado</a>
+        </nav>
+    </header>
+    
+    <div id="contenido">
+        {% block content %}
+        <!-- Este bloque será reemplazado por el contenido específico de cada página -->
+        {% endblock %}
+    </div>
+
+    {% block js %}
+    <script src="{% static 'js/scripts.js' %}"></script>
+    {% endblock %}
+</body>
+</html>

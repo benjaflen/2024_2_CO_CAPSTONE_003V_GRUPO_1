@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Conductor</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Estilo para el sidebar */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px; /* Oculto por defecto */
+            width: 250px;
+            height: 100vh;
+            background-color: #343a40;
+            color: white;
+            transition: 0.3s; /* Transición suave */
+        }
+
+        /* Mostrar el sidebar cuando esté activo */
+        #sidebar.active {
+            left: 0;
+        }
+
+        /* Botón para abrir/cerrar el sidebar */
+        #toggle-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background-color: #343a40;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        /* Estilo para el contenido principal */
+        #contenido {
+            margin-left: 20px; /* Espacio para cuando el sidebar esté oculto */
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Ajustar el margen del contenido cuando el sidebar esté activo */
+        #contenido.active {
+            margin-left: 260px;
+        }
+
+        /* Botón Cerrar Sesión en la parte inferior del sidebar */
+        #logout-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        /* Encabezado */
+        .header {
+            border: 2px solid yellow;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Botón para mostrar/ocultar el sidebar -->
+    <button id="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    <div id="app">
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <div class="text-center mb-4">
+                <img src="https://via.placeholder.com/80" alt="Usuario" class="rounded-circle mb-2" style="width: 80px; height: 80px;">
+                <h5>Usuario</h5>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" href="#" onclick="cargarContenido('/informacionPersonal/')">informacionPersonal</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" href="#" onclick="cargarContenido('/informacionVehiculo/')">informacionVehiculo</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" href="#" onclick="cargarContenido('/ingresaRuta/')">ingresaRuta</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" href="#" onclick="cargarContenido('/apoderado/')">apoderado</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" href="#" onclick="cargarContenido('/alumnos/')">alumnos</a>
+                </li>
+            </ul>
+
+            <!-- Botón Cerrar Sesión en la parte inferior -->
+            <div id="logout-btn">
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-light">Cerrar sesión</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div id="contenido" class="container-fluid p-4">
+            <div class="header mt-2 mb-4">
+                <h1>Hola Conductor</h1>
+                <p>¡Hola {{ user.username }}!</p>
+            </div>
+
+            <div id="contenido-dinamico"></div> <!-- Aquí se cargará el contenido -->
+        </div>
+    </div>
+
+    <script>
+        // Función para abrir/cerrar el sidebar
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var contenido = document.getElementById('contenido');
+            sidebar.classList.toggle('active');
+            contenido.classList.toggle('active');
+        }
+
+        // Función para cargar el contenido dinámico
+        function cargarContenido(url) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById('contenido-dinamico').innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+    </script>
+
+</body>
+</html>

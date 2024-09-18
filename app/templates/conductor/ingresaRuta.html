@@ -1,0 +1,106 @@
+<h2>IngresaRuta</h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingresar Ruta</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&libraries=places" defer></script>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h2>Ingresar Ruta de Alumnos</h2>
+
+    <!-- Formulario para ingresar direcciones -->
+    <form id="routeForm">
+        <div id="directions-inputs">
+            <div class="direction-group">
+                <label for="direccion">Dirección del alumno:</label>
+                <input type="text" name="direccion[]" class="direccion" placeholder="Ingresa dirección">
+            </div>
+        </div>
+        <button type="button" id="addDirection">Agregar otra dirección</button>
+        <button type="submit">Mostrar Ruta</button>
+    </form>
+
+    <!-- Mapa para mostrar la ruta -->
+    <div id="map"></div>
+
+    <script>
+        let map;
+        let directionsService;
+        let directionsRenderer;
+
+        function initMap() {
+            // Inicializa el mapa centrado en una ubicación predeterminada
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: -33.4489, lng: -70.6693 }, // Santiago, Chile (por ejemplo)
+                zoom: 12,
+            });
+
+            // Inicializa el servicio y el renderer de direcciones
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
+        }
+
+        document.getElementById("addDirection").addEventListener("click", function () {
+            // Agregar un nuevo campo de dirección
+            const newInput = document.createElement("div");
+            newInput.classList.add("direction-group");
+            newInput.innerHTML = `
+                <label for="direccion">Dirección del alumno:</label>
+                <input type="text" name="direccion[]" class="direccion" placeholder="Ingresa dirección">
+            `;
+            document.getElementById("directions-inputs").appendChild(newInput);
+        });
+
+        document.getElementById("routeForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            calculateAndDisplayRoute();
+        });
+
+        function calculateAndDisplayRoute() {
+            const inputs = document.querySelectorAll(".direccion");
+            const waypoints = [];
+
+            // Recorre todas las direcciones ingresadas y agrégalas como waypoints
+            for (let i = 1; i < inputs.length - 1; i++) {
+                if (inputs[i].value !== "") {
+                    waypoints.push({
+                        location: inputs[i].value,
+                        stopover: true,
+                    });
+                }
+            }
+
+            // Verifica si hay suficientes direcciones para calcular una ruta
+            if (inputs.length >= 2 && inputs[0].value !== "" && inputs[inputs.length - 1].value !== "") {
+                directionsService.route(
+                    {
+                        origin: inputs[0].value, // Primera dirección como origen
+                        destination: inputs[inputs.length - 1].value, // Última dirección como destino
+                        waypoints: waypoints, // Otras direcciones como puntos intermedios
+                        optimizeWaypoints: true,
+                        travelMode: google.maps.TravelMode.DRIVING,
+                    },
+                    function (response, status) {
+                        if (status === "OK") {
+                            directionsRenderer.setDirections(response);
+                        } else {
+                            alert("No se pudo calcular la ruta: " + status);
+                        }
+                    }
+                );
+            } else {
+                alert("Por favor, ingresa al menos dos direcciones.");
+            }
+        }
+    </script>
+</body>
+</html>

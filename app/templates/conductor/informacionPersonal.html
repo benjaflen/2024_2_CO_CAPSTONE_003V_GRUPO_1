@@ -1,0 +1,25 @@
+<h2>Información Personal</h2>
+<p>Esta es la página para información personal del conductor.</p>
+
+<!-- Muestra los datos del conductor -->
+<p><strong>Nombre:</strong> {{ user.first_name }}</p>
+<p><strong>Apellido:</strong> {{ user.last_name }}</p>
+
+<!-- Formulario para subir archivos -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <!-- Campo para subir la licencia de conducir -->
+    <div>
+        <label for="licencia">Subir licencia de conducir:</label>
+        <input type="file" id="licencia" name="licencia">
+    </div>
+
+    <!-- Campo para subir el certificado de inhabilidad -->
+    <div>
+        <label for="certificado">Subir certificado de inhabilidad:</label>
+        <input type="file" id="certificado" name="certificado">
+    </div>
+    
+    <button type="submit">Guardar</button>
+</form>
