@@ -1,0 +1,288 @@
+/* Estilos generales del cuerpo */
+body {
+    display: grid;
+    grid-template-columns: 1fr; /* Una sola columna que contenga todo */
+    grid-template-rows: auto 1fr; /* La primera fila es la barra de búsqueda, luego el mapa */
+    gap: 10px; /* Espacio entre los elementos */
+    height: 95vh;
+    width: 95vw;
+}
+
+/* Contenedor del título y botones */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alinea los elementos al inicio */
+    gap: 10px; /* Espacio entre los botones y el título */
+    margin-bottom: 20px; /* Espacio entre el header y el contenido */
+}
+
+#sidebar-buttons {
+    display: flex;
+    gap: 10px; /* Espacio entre los botones */
+}
+
+/* Botón con gradiente y brillo */
+.sidebar-close-btn, .back-btn {
+    background: linear-gradient(135deg, hsl(0, 96%, 54%), #f44336);
+    color: white;
+    border: none;
+    border-radius: 50%; /* Forma circular */
+    width: 40px; /* Tamaño del botón circular más pequeño */
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px; /* Ajuste del tamaño del icono */
+    cursor: pointer;
+    transition: box-shadow 0.3s ease, transform 0.2s;
+}
+
+.back-btn {
+    background: linear-gradient(135deg, #2f5ebd, #008CBA);
+    font-size: 20px; /* Tamaño del icono */
+    vertical-align: middle;
+}
+
+.sidebar-close-btn:hover, .back-btn:hover {
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2), 0 0 8px rgba(255, 255, 255, 0.3);
+    transform: scale(1.05); /* Efecto de brillo al pasar el cursor */
+}
+
+
+/* Estilos del contenedor del mapa */
+#map {
+    grid-row: 2 / span 1; /* El mapa estará en la segunda fila */
+    height: 100%;
+    width: 100%;
+    margin: 10px;
+    border-radius: 15px; /* Ajusta el valor para el redondeo que desees */
+    overflow: hidden; /* Asegura que el contenido del mapa no sobresalga de los bordes redondeados */
+    border: 2px solid black; /* Marco negro de 2px de grosor */
+}
+
+
+/* Estilos de la barra lateral */
+#sidebar {
+    grid-column: 3 / span 1; /* La sidebar ocupará la columna restante */
+    grid-row: 1 / span 5; /* La sidebar ocupará 5 filas (toda la altura) */
+    background-color: #f4f4f4;
+    padding: 20px;
+    width: 100%;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Habilitar desplazamiento en caso de contenido largo */
+    border-radius: 15px;
+    border: 2px solid black;
+}
+
+/* Estilos de los botones de las estaciones */
+.station-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;  /* Permite que los botones se ajusten en múltiples filas */
+    margin-bottom: 10px;
+}
+
+/* Estilos de los botones */
+.station-btn {
+    background-color: #3388FF;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.station-btn:hover {
+    background-color: #1778ff;
+}
+
+/* Adaptación a pantallas pequeñas */
+@media (max-width: 600px) {
+    .station-buttons {
+        flex-direction: column; /* Los botones se apilan en columna */
+    }
+
+    .station-btn {
+        width: 100%;
+        margin-bottom: 10px;  /* Más espacio entre botones en pantallas pequeñas */
+    }
+}
+
+/* Ajustes para pantallas medianas */
+@media (max-width: 768px) {
+    #map {
+        width: 100%;
+        margin: 0 auto;  /* Asegura que el mapa se ajuste al centro */
+    }
+}
+
+/* Estilos de las tablas */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.styled-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.styled-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.styled-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Estilos para el overlay y modal */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;  /* Asegura que esté por encima del contenido */
+}
+
+#chart-popup {
+    border-radius: 8px;
+}
+
+#chart-canvas-ts{
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100% - 40px); /* Ajusta al tamaño del pop-up */
+}
+
+#chart-popup canvas {
+    
+    max-width: 100%;
+    max-height: calc(100% - 40px); /* Ajusta al tamaño del pop-up */
+}
+
+.graph-btn {
+    padding: 10px;
+    background-color: #3388FF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.graph-btn:hover {
+    background-color: #0056b3;
+}
+
+
+/* Estilo del modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 70%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+canvas {
+    width: 100% !important;
+    height: 400px !important;
+}
+.popup-modal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90%;
+    max-height: 80%;
+    overflow-y: auto;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos de la barra de búsqueda */
+.search-container {
+    grid-row: 1 / span 1; /* La barra de búsqueda estará en la primera fila */
+    padding: 10px;
+    background-color: #fff;
+    z-index: 999; /* Asegurar que la barra de búsqueda esté encima del mapa */
+}
+
+#station-search {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+#station-search:focus {
+    border-color: #3388FF;
+}
+
+#search-result {
+    color: #666;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+
+.result-item {
+    padding: 8px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.result-item:hover {
+    background-color: #f1f1f1;
+}
+
+.hidden-row {
+    display: none;
+}
